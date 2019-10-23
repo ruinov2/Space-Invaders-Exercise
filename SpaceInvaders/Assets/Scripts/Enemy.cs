@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public Animator enemyAnimator;
     public Sprite enemy;
     public Sprite explosion;
-    private float time = 0.25F; 
+    public AudioSource enemyAudio;
+    private float time = 1.00F; 
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +24,10 @@ public class Enemy : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
-        this.GetComponent<SpriteRenderer>().sprite = explosion;
+        //this.GetComponent<SpriteRenderer>().sprite = explosion;
+        enemyAudio.PlayOneShot(enemyAudio.clip);
+        enemyAnimator.SetBool("Triggered", true);
         Destroy(gameObject, time);
+        Destroy(col.gameObject);
     }
 }
