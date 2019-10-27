@@ -5,22 +5,29 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    public float Speed = 5f;
+    public float speed = 5f;
     public GameObject character;
     //FIRE
     public GameObject shoot;
     public Transform shootSpawn;
     public float fireRate;
-    private float nextFire;
 
-    private float minX, maxX, minY, maxY;
-    private float playerRadius = 0;
+    //Sound
+    public AudioClip laser;
+    public AudioClip hit;
+    AudioSource playerAudioSource;
+
+    float nextFire;
+    float minX, maxX, minY, maxY;
+    float playerRadius = 0;
+
 
 
     // Use this for initialization
     void Start()
     {
         CalculateBoundaries();
+        playerAudioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -81,7 +88,7 @@ public class Player : MonoBehaviour
 
     void PlayerControl() {
 
-        float h = Input.GetAxis("Horizontal") * Speed;
+        float h = Input.GetAxis("Horizontal") * speed;
         character.transform.Translate(h * Time.deltaTime, 0, 0);
     }
 
@@ -92,6 +99,8 @@ public class Player : MonoBehaviour
         {
             nextFire = Time.time + fireRate;
             Instantiate(shoot, shootSpawn.position, shootSpawn.rotation);
+            playerAudioSource.clip = laser;
+            playerAudioSource.Play();
         }
     }
 }
